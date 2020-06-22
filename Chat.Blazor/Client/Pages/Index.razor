@@ -1,0 +1,33 @@
+﻿@page "/"
+
+<AuthorizeView>
+    <Authorized>
+        <MatDivider>
+            @context.User.Identity.Name
+        </MatDivider>
+
+        <p>
+            <MatTextField @bind-Value="@message.Text" Label="Message"></MatTextField>
+        </p>
+
+        <MatButton @onclick="Send" disabled="@(!IsConnected)">
+            Send
+        </MatButton>
+        <hr>
+
+        <MatList id="messagesList">
+            @foreach (var message in messages)
+            {
+                <MatListItem>
+                    @message.UserName -> @message.Text  (@message.Date.ToString("HH:mm"))
+                </MatListItem>
+            }
+        </MatList>
+
+    </Authorized>
+    <NotAuthorized>
+        <a href="authentication/register">Register</a>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
