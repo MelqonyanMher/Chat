@@ -66,6 +66,13 @@ namespace Chat.Blazor.Client.Pages
             }
         }
 
+        private async Task OnKeyPress(KeyboardEventArgs args)
+        {
+            if (args.Key == "Enter")
+            {
+                await Send();
+            }
+        }
         public bool IsConnected =>
             hubConnection.State == HubConnectionState.Connected;
 

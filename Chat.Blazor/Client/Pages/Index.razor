@@ -1,33 +1,47 @@
 ﻿@page "/"
-
 <AuthorizeView>
     <Authorized>
         <MatDivider>
             @context.User.Identity.Name
         </MatDivider>
-
-        <p>
-            <MatTextField @bind-Value="@message.Text" Label="Message"></MatTextField>
-        </p>
-
-        <MatButton @onclick="Send" disabled="@(!IsConnected)">
-            Send
-        </MatButton>
-        <hr>
-
-        <MatList id="messagesList">
+        <MatList id="messagesList"  Style=" top: auto; height: 450px; border: ridge;border-collapse:collapse; max-height: 450px;">
             @foreach (var message in messages)
             {
-                <MatListItem>
-                    @message.UserName -> @message.Text  (@message.Date.ToString("HH:mm"))
-                </MatListItem>
+                @if (message.UserName == context.User.Identity.Name)
+                {
+                    <MatListItem>
+                        <div class="mat-layout-grid mat-layout-grid-align-right" Raised="true">
+                            @message.Text  (@message.Date.ToString("HH:mm"))
+                        </div>
+                    </MatListItem>
+                }
+                else
+                {
+                    <MatListItem>
+                        @message.UserName > @message.Text  (@message.Date.ToString("HH:mm"))
+                    </MatListItem>
+                }
             }
         </MatList>
-
+        <div class="align-bottom align-bottom">
+            <div class="mat-layout-grid mat-layout-grid-align-right" style="max-width: 800px;">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell">
+                        <p>
+                            <MatTextField class="mat-layout-grid-cell" Label="Message" @onkeyup="OnKeyPress" @bind-Value="@message.Text">
+                            </MatTextField>
+                        </p>
+                    </div>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-1">
+                        <MatButton @onclick="Send" Icon="send" disabled="@(!IsConnected)">
+                        </MatButton>
+                    </div>
+                </div>
+            </div>
+        </div>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/register">Register</a>
         <a href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
-
